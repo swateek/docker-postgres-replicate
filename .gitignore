@@ -1,0 +1,5 @@
+.*
+!.gitignore
+!.env
+master-data
+slave-data

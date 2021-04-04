@@ -1,0 +1,26 @@
+version: '3.8'
+services: 
+  master_database:
+    image: postgres:12.5
+    container_name: pg_master
+    volumes:
+      - ${PWD}/master-data:/var/lib/postgresql/data
+      - ${PWD}/pg_master_init_scripts:/docker-entrypoint-initdb.d
+    ports: 
+      - 6432:5432
+    networks: 
+      - pg_replicate
+    environment: 
+      - 'POSTGRES_PASSWORD=my_password'
+      - 'POSTGRES_DB=misc'
+
+volumes: 
+  ds_master:
+    driver: local
+  scripts_master:
+    driver: local
+
+networks: 
+  pg_replicate:
+    name: pg_replicate
+    driver: bridge

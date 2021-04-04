@@ -1,0 +1,26 @@
+version: '3.8'
+services: 
+  slave_database:
+    image: postgres:12.5
+    container_name: pg_slave
+    volumes:
+      - ${PWD}/slave-data:/var/lib/postgresql/data
+      - ${PWD}/pg_slave_init_scripts:/docker-entrypoint-initdb.d
+    ports: 
+      - 6433:5432
+    networks: 
+      - pg_replicate
+    environment: 
+      - 'POSTGRES_PASSWORD=my_password'
+      - 'POSTGRES_DB=misc'
+
+volumes: 
+  ds_standby:
+    driver: local
+  scripts_standby:
+    driver: local
+
+networks: 
+  pg_replicate:
+    name: pg_replicate
+    driver: bridge
